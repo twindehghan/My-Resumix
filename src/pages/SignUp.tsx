@@ -1,19 +1,20 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Github, Chrome, MailCheck } from 'lucide-react';
+import { Github, Chrome, MailCheck, Loader2 } from 'lucide-react';
 import AuthLayout from '../layouts/AuthLayout';
 import { useTranslation } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
 
 const SignUpPage = () => {
     const { t } = useTranslation();
-    const { signUp, signInWithGoogle } = useAuth();
+    const { signUp, signInWithGoogle, signInWithGitHub } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [fullName, setFullName] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState<string | null>(null);
+    const [socialLoading, setSocialLoading] = useState<null | 'google' | 'github'>(null);
 
     const handleSignUp = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -28,8 +29,6 @@ const SignUpPage = () => {
                 data: {
                     full_name: fullName,
                 },
-                // This will redirect the user to the login page after they verify their email.
-                // You must add `http://localhost:5173/login` to your Supabase project's redirect URLs.
                 emailRedirectTo: `${window.location.origin}/login`,
             },
         });
@@ -41,10 +40,20 @@ const SignUpPage = () => {
         }
         setLoading(false);
     };
+
+    const handleSocialLogin = async (provider: 'google' | 'github') => {
+        setError(null);
+        setSocialLoading(provider);
+        const { error } = provider === 'google' ? await signInWithGoogle() : await signInWithGitHub();
+        if (error) {
+            setError(error.message);
+        }
+        setSocialLoading(null);
+    };
     
-    const SocialButton = ({ icon, text, onClick }: { icon: React.ReactNode, text: string, onClick: () => void }) => (
-        <button onClick={onClick} className="flex-1 flex items-center justify-center gap-3 py-3 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-            {icon}
+    const SocialButton = ({ icon, text, onClick, isLoading }: { icon: React.ReactNode, text: string, onClick: () => void, isLoading: boolean }) => (
+        <button onClick={onClick} disabled={isLoading} className="flex-1 flex items-center justify-center gap-3 py-3 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+            {isLoading ? <Loader2 className="animate-spin" size={20} /> : icon}
             <span className="text-sm font-medium text-brand-text">{text}</span>
         </button>
     );
@@ -65,8 +74,18 @@ const SignUpPage = () => {
                     <>
                         <h1 className="text-3xl font-bold text-brand-dark">{t('signUpTitle')}</h1>
                         <div className="mt-8 flex gap-4">
-                            <SocialButton icon={<Chrome size={20} />} text={t('loginWithGoogle')} onClick={signInWithGoogle} />
-                            <SocialButton icon={<Github size={20} />} text={t('loginWithGithub')} onClick={() => alert('GitHub login not implemented yet.')} />
+                            <SocialButton 
+                                icon={<Chrome size={20} />} 
+                                text={t('loginWithGoogle')} 
+                                onClick={() => handleSocialLogin('google')}
+                                isLoading={socialLoading === 'google'} 
+                            />
+                            <SocialButton 
+                                icon={<Github size={20} />} 
+                                text={t('loginWithGithub')} 
+                                onClick={() => handleSocialLogin('github')}
+                                isLoading={socialLoading === 'github'}
+                            />
                         </div>
 
                         <div className="my-8 flex items-center gap-4">

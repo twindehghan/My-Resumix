@@ -44,8 +44,8 @@ const MainRoutes = () => {
       <Route path="for-companies" element={<ForCompanies />} />
       <Route path="rewards-page" element={<RewardsPage />} />
       <Route path="pricing" element={<PricingPage />} />
-      <Route path="resume/new" element={<ResumeEditor />} />
-      <Route path="cover-letter/new" element={<CoverLetterEditor />} />
+      <Route path="resume/edit/:id" element={<ResumeEditor />} />
+      <Route path="cover-letter/edit/:id" element={<CoverLetterEditor />} />
       <Route path="reminders/new" element={<AddReminder />} />
       <Route path="announcements" element={<Announcements />} />
       <Route path="profile" element={<Profile />} />

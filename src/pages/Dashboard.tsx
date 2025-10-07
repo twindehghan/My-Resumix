@@ -1,13 +1,55 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Plus, ArrowRight, Bell, X, Rocket, ThumbsUp, UserPlus, Link as LinkIcon, Linkedin, MessageCircle, Twitter } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Plus, ArrowRight, Bell, X, Rocket, ThumbsUp, UserPlus, Link as LinkIcon, Linkedin, MessageCircle, Twitter, Loader2 } from 'lucide-react';
 import ResumeCard from '../components/ResumeCard';
 import { useTranslation } from '../contexts/LanguageContext';
-import { sampleResumes, myResumes } from '../data';
+import { useAuth } from '../contexts/AuthContext';
+import { createDocument, getUserDocuments, getSampleDocuments } from '../lib/api';
+import { Resume } from '../types';
 
 function Dashboard() {
   const { t } = useTranslation();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
   const [showBanner, setShowBanner] = useState(true);
+  const [myResumes, setMyResumes] = useState<Resume[]>([]);
+  const [sampleResumes, setSampleResumes] = useState<Resume[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchResumes = async () => {
+      if (!user) return;
+      try {
+        setLoading(true);
+        setError(null);
+        const [userResumes, sampleResumesData] = await Promise.all([
+          getUserDocuments(user.id, 'resumes'),
+          getSampleDocuments('resumes')
+        ]);
+        setMyResumes(userResumes as Resume[]);
+        setSampleResumes(sampleResumesData as Resume[]);
+      } catch (err) {
+        setError('Failed to load resumes. Please try again.');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchResumes();
+  }, [user]);
+
+  const handleCreateNewResume = async () => {
+    if (!user) return;
+    try {
+      const newResume = await createDocument(user.id, 'resumes');
+      navigate(`/resume/edit/${newResume.id}`);
+    } catch (err) {
+      setError('Failed to create a new resume. Please try again.');
+    }
+  };
 
   return (
     <>
@@ -29,49 +71,57 @@ function Dashboard() {
               <h2 className="text-2xl sm:text-3xl font-bold">{t('resumeBuilder')}</h2>
               <p className="mt-1 text-brand-text-secondary">{t('resumeBuilderSub')}</p>
             </div>
-            <Link to="/resume/new" className="flex items-center gap-2 rounded-lg bg-brand-blue px-5 py-3 font-semibold text-white shadow-md transition hover:bg-blue-700">
+            <button onClick={handleCreateNewResume} className="flex items-center gap-2 rounded-lg bg-brand-blue px-5 py-3 font-semibold text-white shadow-md transition hover:bg-blue-700">
               <Plus size={20} />
               <span>{t('newResume')}</span>
-            </Link>
-          </div>
-        </section>
-
-        <section className="mt-10">
-          <div className="flex items-center justify-between">
-            <h3 className="text-xl sm:text-2xl font-semibold">{t('sampleResume')}</h3>
-            <button type="button" className="flex items-center gap-2 font-semibold text-brand-blue">
-              <span>{t('seeAll')}</span>
-              <ArrowRight size={16} />
             </button>
           </div>
-          <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-            <ResumeCard type="blank" docType="resume" />
-            {sampleResumes.map(resume => (
-              <ResumeCard key={resume.id} type="sample" docType="resume" {...resume} />
-            ))}
-          </div>
         </section>
 
-        <section className="mt-12">
-          <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
-            <div className="flex items-center gap-6">
-              <h3 className="text-xl sm:text-2xl font-semibold">{t('myResume')}</h3>
-              <div className="flex gap-4 text-brand-text-secondary">
-                <button className="relative font-semibold text-brand-blue after:absolute after:bottom-[-4px] after:start-0 after:h-0.5 after:w-full after:bg-brand-blue">{t('draft')} {myResumes.length}</button>
-                <button className="font-semibold hover:text-brand-blue">{t('completed')} 0</button>
+        {loading ? (
+          <div className="flex justify-center py-20"><Loader2 className="animate-spin" size={40} /></div>
+        ) : error ? (
+          <div className="text-center py-20 text-red-500">{error}</div>
+        ) : (
+          <>
+            <section className="mt-10">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl sm:text-2xl font-semibold">{t('sampleResume')}</h3>
+                <button type="button" className="flex items-center gap-2 font-semibold text-brand-blue">
+                  <span>{t('seeAll')}</span>
+                  <ArrowRight size={16} />
+                </button>
               </div>
-            </div>
-            <Link to="/reminders/new" className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-brand-text-secondary hover:bg-gray-50">
-              <Bell size={16} />
-              <span>{t('addReminder')}</span>
-            </Link>
-          </div>
-          <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-            {myResumes.map(resume => (
-              <ResumeCard key={resume.id} type="my-document" docType="resume" {...resume} />
-            ))}
-          </div>
-        </section>
+              <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+                <ResumeCard type="blank" docType="resume" onClick={handleCreateNewResume} />
+                {sampleResumes.map(resume => (
+                  <ResumeCard key={resume.id} type="sample" docType="resume" {...resume} users={resume.sample_users_count} />
+                ))}
+              </div>
+            </section>
+
+            <section className="mt-12">
+              <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
+                <div className="flex items-center gap-6">
+                  <h3 className="text-xl sm:text-2xl font-semibold">{t('myResume')}</h3>
+                  <div className="flex gap-4 text-brand-text-secondary">
+                    <button className="relative font-semibold text-brand-blue after:absolute after:bottom-[-4px] after:start-0 after:h-0.5 after:w-full after:bg-brand-blue">{t('draft')} {myResumes.length}</button>
+                    <button className="font-semibold hover:text-brand-blue">{t('completed')} 0</button>
+                  </div>
+                </div>
+                <Link to="/reminders/new" className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-brand-text-secondary hover:bg-gray-50">
+                  <Bell size={16} />
+                  <span>{t('addReminder')}</span>
+                </Link>
+              </div>
+              <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+                {myResumes.map(resume => (
+                  <ResumeCard key={resume.id} type="my-document" docType="resume" {...resume} lastUpdatedKey="lastUpdated2Days" />
+                ))}
+              </div>
+            </section>
+          </>
+        )}
 
         <section className="mt-12 rounded-lg bg-brand-dark p-6 sm:p-8 text-white">
           <div className="flex flex-col items-center justify-between gap-6 md:flex-row">

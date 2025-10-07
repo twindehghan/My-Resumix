@@ -376,6 +376,12 @@ export const translations = {
     haveAccount: "Already have an account?",
     loginLink: "Log in",
     orSeparator: "OR",
+    forgotPasswordTitle: "Forgot Your Password?",
+    forgotPasswordSubtitle: "Enter your email and we'll send you a link to reset your password.",
+    sendResetLink: "Send Reset Link",
+    resetLinkSentTitle: "Link Sent!",
+    resetLinkSent: "Check your email for the password reset link!",
+    backToLogin: "Back to Log In",
   },
   fa: {
     siteName: "رزومیکس",
@@ -751,6 +757,12 @@ export const translations = {
     haveAccount: "قبلا حساب کاربری ساخته‌اید؟",
     loginLink: "ورود",
     orSeparator: "یا",
+    forgotPasswordTitle: "رمز عبور خود را فراموش کرده‌اید؟",
+    forgotPasswordSubtitle: "ایمیل خود را وارد کنید تا لینک بازنشانی رمز عبور برای شما ارسال شود.",
+    sendResetLink: "ارسال لینک بازنشانی",
+    resetLinkSentTitle: "لینک ارسال شد!",
+    resetLinkSent: "لینک بازنشانی رمز عبور به ایمیل شما ارسال شد!",
+    backToLogin: "بازگشت به صفحه ورود",
   }
 };
 

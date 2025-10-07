@@ -1,13 +1,17 @@
-import { useReducer, useState } from 'react';
+import { useReducer, useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from '../contexts/LanguageContext';
-import { User, Briefcase, GraduationCap, Plus, Trash2, Star, Code, Globe, Award, Heart, Download, Share2, ChevronDown } from 'lucide-react';
+import { User, Briefcase, GraduationCap, Plus, Trash2, Star, Code, Globe, Award, Heart, Download, Share2, ChevronDown, Loader2 } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
-import { ResumeData, PersonalDetails, WorkExperience, EducationEntry, Skill, Project, LanguageProficiency, Award as AwardType, Interest } from '../types';
+import { ResumeData, PersonalDetails } from '../types';
 import ResumePreview from '../components/ResumePreview';
+import { getDocument, updateDocument } from '../lib/api';
+import { useAuth } from '../contexts/AuthContext';
 
 type SectionName = 'workExperience' | 'education' | 'skills' | 'projects' | 'languages' | 'awards' | 'interests';
 
 type ResumeAction =
+  | { type: 'SET_STATE', payload: ResumeData }
   | { type: 'UPDATE_DETAIL'; payload: { field: keyof PersonalDetails; value: string } }
   | { type: 'ADD_SECTION_ITEM'; payload: { section: SectionName; item: any } }
   | { type: 'REMOVE_SECTION_ITEM'; payload: { section: SectionName; id: string } }
@@ -26,6 +30,8 @@ const initialResumeData: ResumeData = {
 
 function resumeReducer(state: ResumeData, action: ResumeAction): ResumeData {
   switch (action.type) {
+    case 'SET_STATE':
+        return action.payload;
     case 'UPDATE_DETAIL':
       return { ...state, personalDetails: { ...state.personalDetails, [action.payload.field]: action.payload.value } };
     case 'ADD_SECTION_ITEM':
@@ -46,8 +52,55 @@ function resumeReducer(state: ResumeData, action: ResumeAction): ResumeData {
 
 const ResumeEditor = () => {
     const { t } = useTranslation();
-    const [downloadOpen, setDownloadOpen] = useState(false);
+    const { id } = useParams<{ id: string }>();
+    const { user } = useAuth();
+    const navigate = useNavigate();
+
     const [resumeData, dispatch] = useReducer(resumeReducer, initialResumeData);
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [downloadOpen, setDownloadOpen] = useState(false);
+
+    useEffect(() => {
+        const fetchResume = async () => {
+            if (!id || !user) return;
+            try {
+                setLoading(true);
+                setError(null);
+                const data = await getDocument(id, 'resumes');
+                if (data.user_id !== user.id) {
+                    setError("You don't have permission to edit this resume.");
+                    return;
+                }
+                // Ensure data is not null and has a valid structure
+                const resumePayload = data.document_data && typeof data.document_data === 'object' 
+                    ? { ...initialResumeData, ...data.document_data }
+                    : initialResumeData;
+                dispatch({ type: 'SET_STATE', payload: resumePayload });
+            } catch (err) {
+                setError("Failed to load resume data.");
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchResume();
+    }, [id, user]);
+
+    const handleSave = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!id) return;
+        setSaving(true);
+        try {
+            await updateDocument(id, 'resumes', resumeData, resumeData.personalDetails.fullName);
+            // Optionally show a success message
+        } catch (err) {
+            setError("Failed to save resume.");
+        } finally {
+            setSaving(false);
+        }
+    };
 
     const handlePersonalDetailsChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         dispatch({ type: 'UPDATE_DETAIL', payload: { field: e.target.name as keyof PersonalDetails, value: e.target.value } });
@@ -74,6 +127,14 @@ const ResumeEditor = () => {
     const updateListItem = (section: SectionName, id: string, e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         dispatch({ type: 'UPDATE_SECTION_ITEM', payload: { section, id, field: e.target.name, value: e.target.value } });
     };
+
+    if (loading) {
+        return <div className="flex justify-center items-center h-screen"><Loader2 className="animate-spin" size={40} /></div>;
+    }
+
+    if (error) {
+        return <div className="text-center py-20 text-red-500">{error}</div>;
+    }
 
     return (
         <div className="bg-brand-light-gray">
@@ -109,7 +170,7 @@ const ResumeEditor = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                     {/* Form Section */}
                     <div className="lg:max-h-[calc(100vh-250px)] lg:overflow-y-auto pr-4 -mr-4">
-                        <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
+                        <form className="space-y-8" onSubmit={handleSave}>
                             {/* Personal Details */}
                             <div className="rounded-lg border border-gray-200 p-6 bg-white">
                                 <div className="flex items-center gap-4 mb-6">
@@ -229,11 +290,11 @@ const ResumeEditor = () => {
                                 </button>
                             </div>
                             
-                            {/* Other sections follow a similar pattern... */}
-
                             <div className="flex justify-end gap-4 pt-6">
-                                <button type="button" className="rounded-lg border border-gray-300 bg-white px-5 py-3 font-semibold text-brand-text-secondary hover:bg-gray-50">{t('cancel')}</button>
-                                <button type="submit" className="rounded-lg bg-brand-blue px-5 py-3 font-semibold text-white shadow-md transition hover:bg-blue-700">{t('save')}</button>
+                                <button type="button" onClick={() => navigate('/')} className="rounded-lg border border-gray-300 bg-white px-5 py-3 font-semibold text-brand-text-secondary hover:bg-gray-50">{t('cancel')}</button>
+                                <button type="submit" disabled={saving} className="rounded-lg bg-brand-blue px-5 py-3 font-semibold text-white shadow-md transition hover:bg-blue-700 disabled:bg-gray-400">
+                                    {saving ? 'Saving...' : t('save')}
+                                </button>
                             </div>
                         </form>
                     </div>

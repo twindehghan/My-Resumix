@@ -1,7 +1,9 @@
 import { Plus, Lock, Users } from 'lucide-react';
 import { useTranslation } from '../contexts/LanguageContext';
+import { Link } from 'react-router-dom';
 
 interface ResumeCardProps {
+  id?: string;
   docType: 'resume' | 'cover-letter';
   type: 'blank' | 'sample' | 'my-document';
   title?: string;
@@ -10,9 +12,10 @@ interface ResumeCardProps {
   users?: number;
   lastUpdatedKey?: string;
   isLocked?: boolean;
+  onClick?: () => void;
 }
 
-const ResumeCard = ({ docType, type, title, titleKey, imageUrl, users, lastUpdatedKey, isLocked }: ResumeCardProps) => {
+const ResumeCard = ({ id, docType, type, title, titleKey, imageUrl, users, lastUpdatedKey, isLocked, onClick }: ResumeCardProps) => {
   const { t } = useTranslation();
 
   const createBlankText = docType === 'resume' ? t('createBlank') : t('createBlankCoverLetter');
@@ -20,15 +23,18 @@ const ResumeCard = ({ docType, type, title, titleKey, imageUrl, users, lastUpdat
 
   if (type === 'blank') {
     return (
-      <div className="flex h-full min-h-[300px] w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-white text-gray-500 transition hover:border-brand-blue hover:text-brand-blue">
+      <button
+        onClick={onClick}
+        className="flex h-full min-h-[300px] w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-white text-gray-500 transition hover:border-brand-blue hover:text-brand-blue"
+      >
         <Plus size={48} />
         <span className="mt-2 font-semibold">{createBlankText}</span>
-      </div>
+      </button>
     );
   }
 
-  return (
-    <div className="group w-full cursor-pointer overflow-hidden rounded-lg bg-white shadow-md transition hover:shadow-xl">
+  const cardContent = (
+    <>
       <div className="relative overflow-hidden">
         <img src={imageUrl} alt={displayTitle} className="h-auto w-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" />
         {isLocked && (
@@ -49,6 +55,20 @@ const ResumeCard = ({ docType, type, title, titleKey, imageUrl, users, lastUpdat
           <p className="mt-2 text-sm text-brand-text-secondary">{t('lastUpdated')} {t(lastUpdatedKey as any)}</p>
         )}
       </div>
+    </>
+  );
+
+  if (type === 'my-document') {
+    return (
+      <Link to={`/${docType === 'resume' ? 'resume' : 'cover-letter'}/edit/${id}`} className="group block w-full cursor-pointer overflow-hidden rounded-lg bg-white shadow-md transition hover:shadow-xl">
+        {cardContent}
+      </Link>
+    );
+  }
+
+  return (
+    <div className="group w-full cursor-pointer overflow-hidden rounded-lg bg-white shadow-md transition hover:shadow-xl">
+      {cardContent}
     </div>
   );
 };

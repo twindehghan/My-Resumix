@@ -1,5 +1,5 @@
 export interface Document {
-  id: number;
+  id: string; // Changed from number to string to support UUIDs
   title?: string; // For user-generated titles
   titleKey?: string; // For translatable titles
   imageUrl: string;
@@ -45,7 +45,7 @@ export interface Project {
 }
 
 export interface LanguageProficiency {
-  id: string;
+  id:string;
   language: string;
   proficiency: string;
 }
@@ -74,9 +74,11 @@ export interface ResumeData {
   skills: Skill[];
   projects: Project[];
   languages: LanguageProficiency[];
-awards: Award[];
+  awards: Award[];
   interests: Interest[];
 }
+
+export type DocumentData = ResumeData | { content: string }; // For Resume or Cover Letter
 
 // Auth Types
 export interface User {

@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
-import { Session, User } from '@supabase/supabase-js';
+import { Session, User, AuthError } from '@supabase/supabase-js';
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -8,8 +8,10 @@ interface AuthContextType {
   session: Session | null;
   signUp: typeof supabase.auth.signUp;
   signInWithPassword: typeof supabase.auth.signInWithPassword;
-  signInWithGoogle: () => Promise<void>;
+  signInWithGoogle: () => Promise<{ error: AuthError | null }>;
+  signInWithGitHub: () => Promise<{ error: AuthError | null }>;
   signOut: typeof supabase.auth.signOut;
+  resetPasswordForEmail: typeof supabase.auth.resetPasswordForEmail;
   loading: boolean;
 }
 
@@ -40,12 +42,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const signInWithGoogle = async () => {
-    await supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
         redirectTo: window.location.origin,
       },
     });
+    return { error };
+  };
+
+  const signInWithGitHub = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'github',
+      options: {
+        redirectTo: window.location.origin,
+      },
+    });
+    return { error };
   };
 
   const value = {
@@ -55,7 +68,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     signUp: supabase.auth.signUp,
     signInWithPassword: supabase.auth.signInWithPassword,
     signInWithGoogle,
+    signInWithGitHub,
     signOut: supabase.auth.signOut,
+    resetPasswordForEmail: supabase.auth.resetPasswordForEmail,
     loading,
   };
 
