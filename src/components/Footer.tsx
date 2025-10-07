@@ -23,17 +23,15 @@ const Footer = () => {
         ],
         [t('learnWithUs')]: [
             { name: t('coaching'), href: '/mentoring' },
-            { name: t('jobPortal'), href: '#' },
             { name: t('courses'), href: '/courses' },
-            { name: t('virtualInternship'), href: '/virtual-internship' },
         ],
         [t('resources')]: [
             { name: t('about'), href: '/about' },
             { name: t('blog'), href: '/blog' },
             { name: t('testimonial'), href: '/testimonials' },
+            { name: t('pricing'), href: '/pricing' },
             { name: t('forCorporate'), href: '/for-companies' },
             { name: t('rewardPage'), href: '/rewards-page' },
-            { name: t('pricing'), href: '/pricing' },
         ],
     };
 

@@ -11,7 +11,7 @@ const ProfilePage = () => {
                     <div className="text-center mb-12">
                         <div className="flex justify-center mb-4">
                             <div className="flex h-20 w-20 items-center justify-center rounded-full bg-blue-100">
-                                <img className="h-20 w-20 rounded-full object-cover" src="https://i.imgur.com/T5yG4P9.jpg" alt="User avatar" />
+                                <img className="h-20 w-20 rounded-full object-cover" src="https://i.imgur.com/6VBx3io.jpg" alt={t('altUserAvatar')} />
                             </div>
                         </div>
                         <h1 className="text-4xl font-bold tracking-tight text-brand-dark sm:text-5xl">{t('profileTitle')}</h1>

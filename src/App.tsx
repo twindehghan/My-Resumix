@@ -8,14 +8,12 @@ import InterviewGuide from './pages/InterviewGuide';
 import LearnWithUs from './pages/LearnWithUs';
 import Mentoring from './pages/Mentoring';
 import Courses from './pages/Courses';
-import VirtualInternship from './pages/VirtualInternship';
 import Resources from './pages/Resources';
 import About from './pages/About';
 import Blog from './pages/Blog';
 import Testimonials from './pages/Testimonials';
 import ForCompanies from './pages/ForCompanies';
 import RewardsPage from './pages/RewardsPage';
-import Pricing from './pages/Pricing';
 import NotFound from './pages/NotFound';
 import ResumeEditor from './pages/ResumeEditor';
 import CoverLetterEditor from './pages/CoverLetterEditor';
@@ -24,6 +22,7 @@ import Announcements from './pages/Announcements';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Logout from './pages/Logout';
+import PricingPage from './pages/Pricing';
 
 function App() {
   return (
@@ -38,14 +37,13 @@ function App() {
         <Route path="learn-with-us" element={<LearnWithUs />} />
         <Route path="mentoring" element={<Mentoring />} />
         <Route path="courses" element={<Courses />} />
-        <Route path="virtual-internship" element={<VirtualInternship />} />
         <Route path="resources" element={<Resources />} />
         <Route path="about" element={<About />} />
         <Route path="blog" element={<Blog />} />
         <Route path="testimonials" element={<Testimonials />} />
         <Route path="for-companies" element={<ForCompanies />} />
         <Route path="rewards-page" element={<RewardsPage />} />
-        <Route path="pricing" element={<Pricing />} />
+        <Route path="pricing" element={<PricingPage />} />
         <Route path="resume/new" element={<ResumeEditor />} />
         <Route path="cover-letter/new" element={<CoverLetterEditor />} />
         <Route path="reminders/new" element={<AddReminder />} />

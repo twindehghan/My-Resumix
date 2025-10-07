@@ -1,9 +1,11 @@
 export interface Document {
   id: number;
-  title: string;
+  title?: string; // For user-generated titles
+  titleKey?: string; // For translatable titles
   imageUrl: string;
   users?: number;
-  lastUpdated?: string;
+  lastUpdated?: string; // Keep for compatibility, but prefer lastUpdatedKey
+  lastUpdatedKey?: string; // For translatable dates
   isLocked?: boolean;
 }
 

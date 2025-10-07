@@ -1,5 +1,12 @@
-import { Library } from 'lucide-react';
+import { Library, Newspaper, Star, User, ArrowRight } from 'lucide-react';
 import { useTranslation } from '../contexts/LanguageContext';
+import { Link } from 'react-router-dom';
+
+const resourceLinks = [
+    { icon: <Newspaper size={32} className="text-brand-blue" />, titleKey: 'ourBlog', descKey: 'ourBlogDesc', link: '/blog' },
+    { icon: <Star size={32} className="text-brand-blue" />, titleKey: 'userStories', descKey: 'userStoriesDesc', link: '/testimonials' },
+    { icon: <User size={32} className="text-brand-blue" />, titleKey: 'aboutUs', descKey: 'aboutUsDesc', link: '/about' },
+];
 
 const ResourcesPage = () => {
     const { t } = useTranslation();
@@ -17,12 +24,19 @@ const ResourcesPage = () => {
                     <p className="mt-6 text-lg leading-8 text-brand-text-secondary">
                         {t('resourcesSubtitle')}
                     </p>
-                    <div className="mt-10">
-                        <h2 className="text-2xl font-semibold text-brand-dark">{t('resourcesComingSoonTitle')}</h2>
-                        <p className="mt-4 text-brand-text-secondary">
-                            {t('resourcesComingSoonText')}
-                        </p>
-                    </div>
+                </div>
+
+                <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {resourceLinks.map(resource => (
+                        <Link to={resource.link} key={resource.titleKey} className="group block rounded-lg border border-gray-200 p-8 text-center transition-shadow hover:shadow-lg">
+                            <div className="flex justify-center">{resource.icon}</div>
+                            <h3 className="mt-6 text-xl font-semibold text-brand-dark">{t(resource.titleKey as any)}</h3>
+                            <p className="mt-2 text-brand-text-secondary">{t(resource.descKey as any)}</p>
+                            <div className="mt-6 inline-flex items-center gap-2 font-semibold text-brand-blue">
+                                {t('learnMore')} <ArrowRight size={16} />
+                            </div>
+                        </Link>
+                    ))}
                 </div>
             </div>
         </div>

@@ -1,5 +1,27 @@
-import { GraduationCap } from 'lucide-react';
+import { GraduationCap, BookMarked, Users, BookOpen, ArrowRight } from 'lucide-react';
 import { useTranslation } from '../contexts/LanguageContext';
+import { Link } from 'react-router-dom';
+
+const learningPaths = [
+    {
+        icon: <BookMarked size={32} className="text-brand-blue" />,
+        titleKey: 'learnCourses',
+        descKey: 'learnCoursesDesc',
+        link: '/courses'
+    },
+    {
+        icon: <Users size={32} className="text-brand-blue" />,
+        titleKey: 'learnMentoring',
+        descKey: 'learnMentoringDesc',
+        link: '/mentoring'
+    },
+    {
+        icon: <BookOpen size={32} className="text-brand-blue" />,
+        titleKey: 'learnGuides',
+        descKey: 'learnGuidesDesc',
+        link: '/interview-guides'
+    }
+];
 
 const LearnWithUsPage = () => {
     const { t } = useTranslation();
@@ -17,12 +39,19 @@ const LearnWithUsPage = () => {
                     <p className="mt-6 text-lg leading-8 text-brand-text-secondary">
                         {t('learnWithUsSubtitle')}
                     </p>
-                    <div className="mt-10">
-                        <h2 className="text-2xl font-semibold text-brand-dark">{t('learnWithUsComingSoonTitle')}</h2>
-                        <p className="mt-4 text-brand-text-secondary">
-                            {t('learnWithUsComingSoonText')}
-                        </p>
-                    </div>
+                </div>
+
+                <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {learningPaths.map(path => (
+                        <div key={path.titleKey} className="group rounded-lg border border-gray-200 p-8 text-center transition-shadow hover:shadow-lg">
+                            <div className="flex justify-center">{path.icon}</div>
+                            <h3 className="mt-6 text-xl font-semibold text-brand-dark">{t(path.titleKey as any)}</h3>
+                            <p className="mt-2 text-brand-text-secondary">{t(path.descKey as any)}</p>
+                            <Link to={path.link} className="mt-6 inline-flex items-center gap-2 font-semibold text-brand-blue">
+                                {t('learnMore')} <ArrowRight size={16} />
+                            </Link>
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>

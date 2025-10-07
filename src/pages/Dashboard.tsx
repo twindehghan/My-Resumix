@@ -84,9 +84,9 @@ function Dashboard() {
                 <p className="mt-1 text-gray-300">{t('ctaSubtitle')}</p>
               </div>
             </div>
-            <button className="flex-shrink-0 rounded-lg bg-brand-green px-6 py-3 font-semibold text-white shadow-md transition hover:bg-green-700">
+            <Link to="/pricing" className="flex-shrink-0 rounded-lg bg-brand-green px-6 py-3 font-semibold text-white shadow-md transition hover:bg-green-700">
               {t('upgrade')}
-            </button>
+            </Link>
           </div>
         </section>
 

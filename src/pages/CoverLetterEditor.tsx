@@ -24,7 +24,7 @@ const CoverLetterEditor = () => {
                                     id="coverLetterContent"
                                     rows={20}
                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-blue focus:ring-brand-blue"
-                                    placeholder="Start writing your cover letter here..."
+                                    placeholder={t('coverLetterPlaceholder')}
                                 ></textarea>
                             </div>
                         </div>

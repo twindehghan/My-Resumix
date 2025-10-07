@@ -18,10 +18,8 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     if (storedLang === 'fa' || storedLang === 'en') {
       return storedLang;
     }
-    // Default based on browser language if you want, otherwise default to 'en'
-    // const browserLang = navigator.language.split('-')[0];
-    // if (browserLang === 'fa') return 'fa';
-    return 'en';
+    // Default to Persian for first-time visitors
+    return 'fa';
   };
 
   const [language, setLanguageState] = useState<Language>(getInitialLanguage);

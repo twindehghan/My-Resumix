@@ -4,10 +4,12 @@ import Footer from './Footer';
 import { useTranslation } from '../contexts/LanguageContext';
 
 const Layout = () => {
-  const { dir } = useTranslation();
+  const { dir, language } = useTranslation();
+
+  const fontClass = language === 'fa' ? 'font-vazir' : 'font-sans';
 
   return (
-    <div className="bg-brand-light-gray font-sans text-brand-text" dir={dir}>
+    <div className={`bg-brand-light-gray text-brand-text ${fontClass}`} dir={dir}>
       <Header />
       <main>
         <Outlet />
