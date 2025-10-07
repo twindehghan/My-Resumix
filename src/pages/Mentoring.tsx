@@ -29,7 +29,7 @@ const MentoringPage = () => {
                 <div className="mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                     {mentors.map((mentor) => (
                         <div key={mentor.nameKey} className="group overflow-hidden rounded-lg border border-gray-200 text-center shadow-sm transition-shadow hover:shadow-xl">
-                            <img className="h-64 w-full object-cover" src={mentor.imageUrl} alt={t(mentor.nameKey as any)} />
+                            <img className="h-64 w-full object-cover" src={mentor.imageUrl} alt={t(mentor.nameKey as any)} loading="lazy" />
                             <div className="p-6">
                                 <h4 className="text-lg font-semibold text-brand-dark">{t(mentor.nameKey as any)}</h4>
                                 <p className="text-sm text-brand-blue">{t(mentor.roleKey as any)}</p>

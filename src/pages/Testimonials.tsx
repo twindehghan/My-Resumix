@@ -46,7 +46,7 @@ const TestimonialsPage = () => {
                             <Quote size={24} className="text-brand-blue" />
                             <p className="mt-4 flex-1 text-brand-text-secondary">"{t(testimonial.textKey as any)}"</p>
                             <div className="mt-6 flex items-center gap-4">
-                                <img className="h-12 w-12 rounded-full object-cover" src={testimonial.imageUrl} alt={t(testimonial.nameKey as any)} />
+                                <img className="h-12 w-12 rounded-full object-cover" src={testimonial.imageUrl} alt={t(testimonial.nameKey as any)} loading="lazy" />
                                 <div>
                                     <p className="font-semibold text-brand-dark">{t(testimonial.nameKey as any)}</p>
                                     <p className="text-sm text-brand-text-secondary">{t(testimonial.roleKey as any)}</p>

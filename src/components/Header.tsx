@@ -1,14 +1,23 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { LayoutGrid, Megaphone, ChevronDown } from 'lucide-react';
 import { useTranslation } from '../contexts/LanguageContext';
 import { Language } from '../i18n';
+import { useClickOutside } from '../hooks/useClickOutside';
 
 const Header = () => {
   const { t, language, setLanguage } = useTranslation();
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [toolsDropdownOpen, setToolsDropdownOpen] = useState(false);
+
+  const langDropdownRef = useRef<HTMLDivElement>(null);
+  const profileDropdownRef = useRef<HTMLDivElement>(null);
+  const toolsDropdownRef = useRef<HTMLDivElement>(null);
+
+  useClickOutside(langDropdownRef, () => setLangDropdownOpen(false));
+  useClickOutside(profileDropdownRef, () => setProfileDropdownOpen(false));
+  useClickOutside(toolsDropdownRef, () => setToolsDropdownOpen(false));
 
   const handleLangChange = (lang: Language) => {
     setLanguage(lang);
@@ -28,7 +37,7 @@ const Header = () => {
             <p className="hidden md:block text-brand-text">{t('greeting')}</p>
           </div>
           <nav className="flex items-center gap-2 sm:gap-4">
-            <div className="relative">
+            <div ref={toolsDropdownRef} className="relative">
               <button onClick={() => setToolsDropdownOpen(!toolsDropdownOpen)} className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-brand-text-secondary hover:bg-gray-100">
                 <LayoutGrid size={20} />
                 <span className="hidden sm:inline">{t('tools')}</span>
@@ -50,7 +59,7 @@ const Header = () => {
               <span className="hidden sm:inline">{t('announcements')}</span>
               <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">3</span>
             </Link>
-            <div className="relative">
+            <div ref={langDropdownRef} className="relative">
               <button onClick={() => setLangDropdownOpen(!langDropdownOpen)} className="flex items-center gap-2 rounded-md border border-gray-300 px-3 py-2 text-sm font-medium text-brand-text-secondary hover:bg-gray-100">
                 <img src={`https://flagcdn.com/w20/${language === 'en' ? 'us' : 'ir'}.png`} alt={t('altCountryFlag')} />
                 <span className="hidden sm:inline">{t('language')}</span>
@@ -71,7 +80,7 @@ const Header = () => {
                 </div>
               )}
             </div>
-            <div className="relative">
+            <div ref={profileDropdownRef} className="relative">
               <button onClick={() => setProfileDropdownOpen(!profileDropdownOpen)} className="flex items-center gap-2 rounded-full border-2 border-transparent hover:border-brand-blue">
                 <img className="h-10 w-10 rounded-full object-cover" src="https://i.imgur.com/6VBx3io.jpg" alt={t('altUserAvatar')} />
                 <ChevronDown size={16} className="text-brand-text-secondary hidden sm:block" />

@@ -62,13 +62,25 @@ export interface Interest {
   name: string;
 }
 
+export interface Skill {
+  id: string;
+  name: string;
+}
+
 export interface ResumeData {
   personalDetails: PersonalDetails;
   workExperience: WorkExperience[];
   education: EducationEntry[];
-  skills: string[];
+  skills: Skill[];
   projects: Project[];
   languages: LanguageProficiency[];
-  awards: Award[];
+awards: Award[];
   interests: Interest[];
+}
+
+// Auth Types
+export interface User {
+  id: string;
+  name: string;
+  email: string;
 }

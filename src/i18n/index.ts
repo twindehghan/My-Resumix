@@ -360,6 +360,22 @@ export const translations = {
     practiceAnswer3: "Iterate through the list using two pointers, `prev` and `current`. In each step, point the `next` of `current` to `prev`, then move both pointers one step forward.",
     practiceAnswer4: "SQL databases are relational (tables with fixed schemas), vertically scalable, and use SQL. NoSQL databases are non-relational (documents, key-value pairs), horizontally scalable, and have dynamic schemas.",
     practiceAnswer5: "First, clarify the goal (e.g., 'What does 'declining profits' mean exactly?'). Then, structure the analysis. I'd investigate revenue streams (price, volume) and cost drivers (fixed, variable) to identify the root cause.",
+  
+    // Auth Pages
+    authSlogan: "Build your future, one resume at a time.",
+    loginTitle: "Welcome Back!",
+    loginButton: "Log In",
+    loginWithGoogle: "Continue with Google",
+    loginWithGithub: "Continue with GitHub",
+    forgotPassword: "Forgot password?",
+    noAccount: "Don't have an account?",
+    signUpLink: "Sign up",
+    signUpTitle: "Create an account",
+    signUpButton: "Sign Up",
+    password: "Password",
+    haveAccount: "Already have an account?",
+    loginLink: "Log in",
+    orSeparator: "OR",
   },
   fa: {
     siteName: "رزومیکس",
@@ -518,7 +534,7 @@ export const translations = {
     toolPracticeQuestionsDesc: "مهارت‌های مصاحبه خود را با کتابخانه وسیعی از سوالات برای نقش‌های مختلف تقویت کنید.",
     launchTool: "اجرای ابزار",
     
-    practiceQuestionsSubtitle: "مهارت‌های مصاحبه خود را با کتابخانه وسیعی از سوالات تمرینی برای صنایع و نقش‌های مختلف تقویت کنید.",
+    practiceQuestionsSubtitle: "مهارت‌های مصاحbe خود را با کتابخانه وسیعی از سوالات تمرینی برای صنایع و نقش‌های مختلف تقویت کنید.",
     categoryBehavioral: "سوالات رفتاری",
     categoryTechnical: "سوالات فنی (نرم‌افزار)",
     categoryCase: "سوالات مطالعه موردی (مشاوره)",
@@ -548,7 +564,7 @@ export const translations = {
     referralProgress: "شما با موفقیت {count} از ۳ دوست را معرفی کرده‌اید.",
 
     testimonialsSubtitle: "ببینید کاربران ما در مورد اینکه چگونه Resumix به آنها در به دست آوردن شغل رویایی خود کمک کرده است چه می گویند.",
-    testimonial1: "رزومیکس رزومه من را کاملاً متحول کرد. قالب‌ها مدرن هستند و امتیازدهی هوش مصنوعی به من اعتماد به نفس لازم برای درخواست شغل رویایی‌ام را داد. و آن را به دست آوردم!",
+    testimonial1: "رزومیکس رزومه من را کاملاً متحول کرد. قالب‌ها مدرن هستند و امتیازدهی هوش مصنوعی به من اعتماد به نفس لازم برای درخواست شغل رویایی‌ام را داد. و آن را به دست آورdem!",
     testimonial1Name: "ماریا گارسیا",
     testimonial1Role: "مهندس نرم‌افزار در TechCorp",
     testimonial2: "به عنوان یک فارغ‌التحصیل جدید، سردرگم بودم. راهنماهای مصاحبه و سوالات تمرینی نجات‌بخش بودند. برای مصاحبه‌هایم کاملاً آماده بودم.",
@@ -719,6 +735,22 @@ export const translations = {
     practiceAnswer3: "با استفاده از دو اشاره‌گر `prev` و `current` در لیست تکرار کنید. در هر مرحله، `next` اشاره‌گر `current` را به `prev` اشاره دهید، سپس هر دو اشاره‌گر را یک قدم به جلو ببرید.",
     practiceAnswer4: "پایگاه‌های داده SQL رابطه‌ای هستند (جداول با اسکیمای ثابت)، به صورت عمودی مقیاس‌پذیرند و از SQL استفاده می‌کنند. پایگاه‌های داده NoSQL غیررابطه‌ای هستند (اسناد، زوج‌های کلید-مقدار)، به صورت افقی مقیاس‌پذیرند و اسکیمای پویا دارند.",
     practiceAnswer5: "ابتدا هدف را روشن کنید (مثلاً 'کاهش سود دقیقاً به چه معناست؟'). سپس تحلیل را ساختار دهید. من جریان‌های درآمد (قیمت، حجم) و عوامل هزینه (ثابت، متغیر) را برای شناسایی علت اصلی بررسی می‌کنم.",
+  
+    // Auth Pages
+    authSlogan: "آینده خود را بسازید، یک رزومه در یک زمان.",
+    loginTitle: "خوش آمدید!",
+    loginButton: "ورود",
+    loginWithGoogle: "ادامه با گوگل",
+    loginWithGithub: "ادامه با گیت‌هاب",
+    forgotPassword: "رمز عبور را فراموش کرده‌اید؟",
+    noAccount: "حساب کاربری ندارید؟",
+    signUpLink: "ثبت نام",
+    signUpTitle: "ایجاد حساب کاربری",
+    signUpButton: "ثبت نام",
+    password: "رمز عبور",
+    haveAccount: "قبلا حساب کاربری ساخته‌اید؟",
+    loginLink: "ورود",
+    orSeparator: "یا",
   }
 };
 

@@ -104,10 +104,10 @@ const ResumePreview = ({ data }: ResumePreviewProps) => {
             </div>
         </Section>
 
-        <Section title={t('skills')} icon={<Star size={20} />} condition={skills.some(skill => skill)}>
+        <Section title={t('skills')} icon={<Star size={20} />} condition={skills.some(skill => skill.name)}>
             <div className="flex flex-wrap gap-2">
-              {skills.map((skill, index) => (
-                skill && <span key={index} className="bg-blue-100 text-brand-blue text-sm font-medium px-3 py-1 rounded-full">{skill}</span>
+              {skills.map((skill) => (
+                skill.name && <span key={skill.id} className="bg-blue-100 text-brand-blue text-sm font-medium px-3 py-1 rounded-full">{skill.name}</span>
               ))}
             </div>
         </Section>

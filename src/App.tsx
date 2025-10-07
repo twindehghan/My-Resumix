@@ -1,58 +1,33 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
-import Dashboard from './pages/Dashboard';
-import OurTools from './pages/OurTools';
-import CoverLetterBuilder from './pages/CoverLetterBuilder';
-import PracticeQuestions from './pages/PracticeQuestions';
-import InterviewGuide from './pages/InterviewGuide';
-import LearnWithUs from './pages/LearnWithUs';
-import Mentoring from './pages/Mentoring';
-import Courses from './pages/Courses';
-import Resources from './pages/Resources';
-import About from './pages/About';
-import Blog from './pages/Blog';
-import Testimonials from './pages/Testimonials';
-import ForCompanies from './pages/ForCompanies';
-import RewardsPage from './pages/RewardsPage';
-import NotFound from './pages/NotFound';
-import ResumeEditor from './pages/ResumeEditor';
-import CoverLetterEditor from './pages/CoverLetterEditor';
-import AddReminder from './pages/AddReminder';
-import Announcements from './pages/Announcements';
-import Profile from './pages/Profile';
-import Settings from './pages/Settings';
-import Logout from './pages/Logout';
-import PricingPage from './pages/Pricing';
+import ProtectedRoute from './components/ProtectedRoute';
+import MainRoutes from './components/MainRoutes';
+import LoginPage from './pages/Login';
+import SignUpPage from './pages/SignUp';
+import { useAuth } from './contexts/AuthContext';
+import PageLoader from './components/PageLoader';
 
 function App() {
+  const { isAuthenticated, loading } = useAuth();
+
+  if (loading) {
+    return <PageLoader />;
+  }
+
   return (
     <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<Dashboard />} />
-        <Route path="resume-builder" element={<Dashboard />} />
-        <Route path="our-tools" element={<OurTools />} />
-        <Route path="cover-letter-builder" element={<CoverLetterBuilder />} />
-        <Route path="practice-questions" element={<PracticeQuestions />} />
-        <Route path="interview-guides" element={<InterviewGuide />} />
-        <Route path="learn-with-us" element={<LearnWithUs />} />
-        <Route path="mentoring" element={<Mentoring />} />
-        <Route path="courses" element={<Courses />} />
-        <Route path="resources" element={<Resources />} />
-        <Route path="about" element={<About />} />
-        <Route path="blog" element={<Blog />} />
-        <Route path="testimonials" element={<Testimonials />} />
-        <Route path="for-companies" element={<ForCompanies />} />
-        <Route path="rewards-page" element={<RewardsPage />} />
-        <Route path="pricing" element={<PricingPage />} />
-        <Route path="resume/new" element={<ResumeEditor />} />
-        <Route path="cover-letter/new" element={<CoverLetterEditor />} />
-        <Route path="reminders/new" element={<AddReminder />} />
-        <Route path="announcements" element={<Announcements />} />
-        <Route path="profile" element={<Profile />} />
-        <Route path="settings" element={<Settings />} />
-        <Route path="logout" element={<Logout />} />
-        <Route path="*" element={<NotFound />} />
-      </Route>
+      {/* Public routes that are inaccessible when logged in */}
+      <Route path="/login" element={isAuthenticated ? <Navigate to="/" replace /> : <LoginPage />} />
+      <Route path="/signup" element={isAuthenticated ? <Navigate to="/" replace /> : <SignUpPage />} />
+      
+      {/* All other routes are protected */}
+      <Route path="/*" element={
+        <ProtectedRoute>
+          <Layout>
+            <MainRoutes />
+          </Layout>
+        </ProtectedRoute>
+      } />
     </Routes>
   );
 }

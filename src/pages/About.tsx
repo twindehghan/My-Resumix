@@ -59,7 +59,7 @@ const AboutPage = () => {
                     <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         {teamMembers.map((member) => (
                             <div key={member.nameKey} className="text-center">
-                                <img className="mx-auto h-32 w-32 rounded-full object-cover" src={member.imageUrl} alt={t(member.nameKey as any)} />
+                                <img className="mx-auto h-32 w-32 rounded-full object-cover" src={member.imageUrl} alt={t(member.nameKey as any)} loading="lazy" />
                                 <h4 className="mt-4 text-lg font-semibold text-brand-dark">{t(member.nameKey as any)}</h4>
                                 <p className="text-brand-blue">{t(member.roleKey as any)}</p>
                             </div>

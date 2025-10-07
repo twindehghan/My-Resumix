@@ -1,7 +1,9 @@
 import { Outlet } from 'react-router-dom';
+import { Suspense } from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import { useTranslation } from '../contexts/LanguageContext';
+import PageLoader from './PageLoader';
 
 const Layout = () => {
   const { dir, language } = useTranslation();
@@ -12,7 +14,9 @@ const Layout = () => {
     <div className={`bg-brand-light-gray text-brand-text ${fontClass}`} dir={dir}>
       <Header />
       <main>
-        <Outlet />
+        <Suspense fallback={<PageLoader />}>
+          <Outlet />
+        </Suspense>
       </main>
       <Footer />
     </div>

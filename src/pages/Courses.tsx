@@ -46,7 +46,7 @@ const CoursesPage = () => {
                 <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {courses.map(course => (
                         <div key={course.titleKey} className="group flex flex-col overflow-hidden rounded-lg border border-gray-200 shadow-sm transition-shadow hover:shadow-lg">
-                            <img src={course.imageUrl} alt={t(course.titleKey as any)} className="h-48 w-full object-cover" />
+                            <img src={course.imageUrl} alt={t(course.titleKey as any)} className="h-48 w-full object-cover" loading="lazy" />
                             <div className="flex flex-1 flex-col p-6">
                                 <h3 className="text-xl font-semibold text-brand-dark">{t(course.titleKey as any)}</h3>
                                 <p className="mt-3 flex-1 text-sm text-brand-text-secondary">{t(course.descKey as any)}</p>

@@ -30,7 +30,7 @@ const ResumeCard = ({ docType, type, title, titleKey, imageUrl, users, lastUpdat
   return (
     <div className="group w-full cursor-pointer overflow-hidden rounded-lg bg-white shadow-md transition hover:shadow-xl">
       <div className="relative overflow-hidden">
-        <img src={imageUrl} alt={displayTitle} className="h-auto w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+        <img src={imageUrl} alt={displayTitle} className="h-auto w-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" />
         {isLocked && (
           <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <Lock size={32} className="text-white" />

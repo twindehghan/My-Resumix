@@ -53,7 +53,7 @@ const BlogPage = () => {
                     <div className="mt-20">
                         <h2 className="text-3xl font-bold text-brand-dark mb-8">{t('featuredPost')}</h2>
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center bg-brand-light-gray rounded-lg p-8">
-                            <img src={featuredPost.imageUrl} alt={t(featuredPost.titleKey as any)} className="rounded-lg object-cover w-full h-80" />
+                            <img src={featuredPost.imageUrl} alt={t(featuredPost.titleKey as any)} className="rounded-lg object-cover w-full h-80" loading="lazy" />
                             <div>
                                 <h3 className="text-2xl font-semibold text-brand-dark">{t(featuredPost.titleKey as any)}</h3>
                                 <div className="flex items-center gap-4 text-sm text-brand-text-secondary my-4">
@@ -74,7 +74,7 @@ const BlogPage = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {otherPosts.map((post) => (
                             <div key={post.titleKey} className="bg-brand-light-gray rounded-lg overflow-hidden">
-                                <img src={post.imageUrl} alt={t(post.titleKey as any)} className="w-full h-56 object-cover" />
+                                <img src={post.imageUrl} alt={t(post.titleKey as any)} className="w-full h-56 object-cover" loading="lazy" />
                                 <div className="p-6">
                                     <h3 className="text-xl font-semibold text-brand-dark">{t(post.titleKey as any)}</h3>
                                     <div className="flex items-center gap-4 text-sm text-brand-text-secondary my-3">

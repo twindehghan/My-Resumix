@@ -39,10 +39,10 @@ function CoverLetterBuilderPage() {
         <section className="mt-10">
           <div className="flex items-center justify-between">
             <h3 className="text-xl sm:text-2xl font-semibold">{t('sampleCoverLetter')}</h3>
-            <a href="#" className="flex items-center gap-2 font-semibold text-brand-blue">
+            <button type="button" className="flex items-center gap-2 font-semibold text-brand-blue">
               <span>{t('seeAll')}</span>
               <ArrowRight size={16} />
-            </a>
+            </button>
           </div>
           <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
             <ResumeCard type="blank" docType="cover-letter" />
@@ -103,10 +103,10 @@ function CoverLetterBuilderPage() {
                 </div>
                 <p className="mt-4 text-brand-text-secondary">{t('scoreText')}</p>
                 <div className="mt-6 rounded-lg bg-blue-50 p-4 text-center transition hover:bg-blue-100">
-                    <a href="#" className="flex items-center justify-center gap-2 font-semibold text-brand-blue">
+                    <button type="button" className="w-full flex items-center justify-center gap-2 font-semibold text-brand-blue">
                         <span>{t('tryItOut')}</span>
                         <ArrowRight size={16} />
-                    </a>
+                    </button>
                 </div>
             </div>
             
